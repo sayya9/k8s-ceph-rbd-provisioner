@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: "i-am-rbd-pod-to-test-myself-{{ .Release.Name }}"
+  labels:
+{{ include "labels" . | indent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: busybox
+      image: busybox:latest
+      imagePullPolicy: {{ .Values.global.image.pullPolicy }}
+      command: ["echo"]
+      args: ["rbd", ">", "/tmp/test/rbd.txt"]
+      volumeMounts:
+      - name: test-data
+        mountPath: /tmp/test
+  volumes:
+    - name: test-data
+      persistentVolumeClaim:
+        claimName: "i-am-rbd-pvc-to-test-myself-{{ .Release.Name }}"
+  restartPolicy: Never

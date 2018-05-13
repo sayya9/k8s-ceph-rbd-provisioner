@@ -1,0 +1,14 @@
+kind: "PersistentVolumeClaim"
+apiVersion: "v1"
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: "i-am-rbd-pvc-to-test-myself-{{ .Release.Name }}"
+  labels:
+{{ include "labels" . | indent 4 }}
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "1Gi"
+  storageClassName: {{ .Values.global.storageClassName }}

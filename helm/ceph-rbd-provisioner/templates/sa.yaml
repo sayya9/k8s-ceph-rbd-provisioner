@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: rbd-provisioner
+  labels:
+{{ include "labels" . | indent 4 }}
